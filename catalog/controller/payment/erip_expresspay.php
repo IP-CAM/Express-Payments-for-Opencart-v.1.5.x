@@ -241,13 +241,17 @@ class ControllerPaymentEripExpressPay extends Controller {
         		case '1':
         			$this->model_checkout_order->update($data->AccountNo, $this->config->get('erip_processing_status_id'));
         			$this->log_info('notify_success', 'Initialization to update status. STATUS ID - ' . $this->config->get('erip_processing_status_id') . "; RESPONSE - " . $dataJSON);
-
         			break;
         		case '2':
         			$this->model_checkout_order->update($data->AccountNo, $this->config->get('erip_cancel_status_id'));
 					$this->log_info('notify_success', 'Initialization to update status. STATUS ID - ' . $this->config->get('erip_cancel_status_id') . "; RESPONSE - " . $dataJSON);
-
         			break;
+				case '3':
+					if ($data->Status == 3 || $data->Status == 6){
+						$this->model_checkout_order->update($data->AccountNo, $this->config->get('erip_processing_status_id'));
+						$this->log_info('notify_success', 'Initialization to update status. STATUS ID - ' . $this->config->get('erip_processing_status_id') . "; RESPONSE - " . $dataJSON);
+					}
+					break;
         		default:
 					$this->notify_fail($dataJSON);
 					die();
